@@ -7,7 +7,7 @@ function checkStock($id_film)
    $query_stock =  "SELECT quantity FROM films WHERE id = {$id_film}";
   $result_stock = mysql_query($query_stock);
   $row = mysql_fetch_row($result_stock);
-   echo $row[0]['quantity'];
+   echo $row[0]['quantity'];// Warning: Illegal string offset 'quantity' in cart.php line 10
 }
 
 
