@@ -115,6 +115,7 @@ function AddToCart() //add product or products to the cart
     return $error;
 }
 
+
 /*function AddToCart() //add product or products to the cart
 {
 if(intval($_POST['quantity']) < 1) {
