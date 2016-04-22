@@ -71,18 +71,18 @@ function AddToCart() //add product or products to the cart
 	//stock control preventing adding product quantity 0 
         $avaiable_query = mysql_query("SELECT quantity FROM cycles WHERE id = '".$_POST['productcode']."' LIMIT 1;");
         if(!$avaiable_query) {
-            $error .= ' cycle not found.';
-            $avaiable = 0;
+            $error .= ' film not found.';
+            $available = 0;
         } else {
             $avaiable_row = mysql_fetch_assoc($avaiable_query);
-            $avaiable = $avaiable_row['quantity'];
+            $available = $avaiable_row['quantity'];
         }
        $cart[QUANTITY][$i] = $cart[QUANTITY][$i] + intval($_POST['quantity']);
         if ($cart[QUANTITY][$i] < 1) {
             $error .= ' Don’t add 0 amount.';
         }
 		//preventing adding more than quantity available
-        if($cart[QUANTITY][$i] > $avaiable) {
+        if($cart[QUANTITY][$i] > $available) {
             $error .= ' Quantity more than available.';
         }
         $cart[PRICE][$i] = $cart[PRICE][$i] + $_POST['price'];
@@ -90,14 +90,14 @@ function AddToCart() //add product or products to the cart
         $cart[PRODUCTCODE][$itmcount] = $_POST['productcode'];
         $avaiable_query = mysql_query("SELECT quantity FROM cycles WHERE id = '".$_POST['productcode']."' LIMIT 1;");
         if(!$avaiable_query) {
-            $error .= ' cycle not found.';
-            $avaiable = 0;
+            $error .= ' film not found.';
+            $available = 0;
         } else {
             $avaiable_row = mysql_fetch_assoc($avaiable_query);
-            $avaiable = $avaiable_row['quantity'];
+            $available = $avaiable_row['quantity'];
         }
-        if(intval($_POST['quantity']) > $avaiable) {
-            $error .= ' Quantity more than avaiable.';
+        if(intval($_POST['quantity']) > $available) {
+            $error .= ' Quantity more than available.';
         }
         $cart[PRODUCTNAME][$itmcount] = $_POST['productname'];
         $cart[QUANTITY][$itmcount] = intval($_POST['quantity']);
@@ -114,6 +114,7 @@ function AddToCart() //add product or products to the cart
     }
     return $error;
 }
+
 /*function AddToCart() //add product or products to the cart
 {
 if(intval($_POST['quantity']) < 1) {
@@ -161,15 +162,6 @@ if(intval($_POST['quantity']) < 1) {
     return "";	// no errors
    
 }*/
-
-
-
-
-
-
-
-
-
 
 function EmptyCart()
 {
