@@ -2,13 +2,14 @@
 session_start();
 include "db.php"; //connecting database
 
-function checkStock($id_film)
+/* wrong function checkStock($id_film)
 {
    $query_stock =  "SELECT quantity FROM films WHERE id = {$id_film}";
   $result_stock = mysql_query($query_stock);
   $row = mysql_fetch_row($result_stock);
    echo $row[0]['quantity'];// Warning: Illegal string offset 'quantity' in cart.php line 10
-}
+}*/
+
 
 
 //define a session start
@@ -61,6 +62,64 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 function AddToCart() //add product or products to the cart
 {
+    $error = ""; //String for storing errors
+    $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : '';
+    //after session created
+    $itmcount = isset($_SESSION['itmcount']) ? $_SESSION['itmcount'] : 0;
+    if(is_array($cart) && isset($cart[PRODUCTCODE]) && is_array($cart[PRODUCTCODE]) && in_array($_POST['productcode'], $cart[PRODUCTCODE])) {
+        $i = array_search($_POST['productcode'], $cart[PRODUCTCODE]);
+	//stock control preventing adding product quantity 0 
+        $avaiable_query = mysql_query("SELECT quantity FROM cycles WHERE id = '".$_POST['productcode']."' LIMIT 1;");
+        if(!$avaiable_query) {
+            $error .= ' cycle not found.';
+            $avaiable = 0;
+        } else {
+            $avaiable_row = mysql_fetch_assoc($avaiable_query);
+            $avaiable = $avaiable_row['quantity'];
+        }
+       $cart[QUANTITY][$i] = $cart[QUANTITY][$i] + intval($_POST['quantity']);
+        if ($cart[QUANTITY][$i] < 1) {
+            $error .= ' Don’t add 0 amount.';
+        }
+		//preventing adding more than quantity available
+        if($cart[QUANTITY][$i] > $avaiable) {
+            $error .= ' Quantity more than available.';
+        }
+        $cart[PRICE][$i] = $cart[PRICE][$i] + $_POST['price'];
+    } else {
+        $cart[PRODUCTCODE][$itmcount] = $_POST['productcode'];
+        $avaiable_query = mysql_query("SELECT quantity FROM cycles WHERE id = '".$_POST['productcode']."' LIMIT 1;");
+        if(!$avaiable_query) {
+            $error .= ' cycle not found.';
+            $avaiable = 0;
+        } else {
+            $avaiable_row = mysql_fetch_assoc($avaiable_query);
+            $avaiable = $avaiable_row['quantity'];
+        }
+        if(intval($_POST['quantity']) > $avaiable) {
+            $error .= ' Quantity more than avaiable.';
+        }
+        $cart[PRODUCTNAME][$itmcount] = $_POST['productname'];
+        $cart[QUANTITY][$itmcount] = intval($_POST['quantity']);
+        if ($cart[QUANTITY][$itmcount] < 1) {
+            $error .= ' Don’t add 0 amount.';
+        }
+        $cart[PRICE][$itmcount] = $_POST['price'];
+
+        $itmcount = $itmcount + 1;
+    }
+    if(strlen($error) == 0) { //if no errors
+        $_SESSION['cart'] = $cart;
+        $_SESSION['itmcount'] = $itmcount;
+    }
+    return $error;
+}
+
+
+
+
+/*function AddToCart() //add product or products to the cart
+{
 if(intval($_POST['quantity']) < 1) {
     	return "Don’t add 0 amount";
     }
@@ -105,7 +164,16 @@ if(intval($_POST['quantity']) < 1) {
       // return $error;
     return "";	// no errors
    
-}
+}*/
+
+
+
+
+
+
+
+
+
 
 function EmptyCart()
 {
