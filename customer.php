@@ -104,11 +104,11 @@ if($result) {
     $row = mysql_fetch_assoc($result);
 }
 
-$firstname = 	( isset($row)&& !empty($row['firstname']))  ? $row['firstname'] : (isset($_SESSION['firstname']) ? $_SESSION['firstname'] : '');
-$lastname = 	(isset($row) && !empty($row['surname']))    ? $row['surname']   : (isset($_SESSION['lastname'])  ? $_SESSION['lastname'] : '');
+$firstname =    	( isset($row)&& !empty($row['firstname']))  ? $row['firstname'] : (isset($_SESSION['firstname']) ? $_SESSION['firstname'] : '');
+$lastname =       	(isset($row) && !empty($row['surname']))    ? $row['surname']   : (isset($_SESSION['lastname'])  ? $_SESSION['lastname'] : '');
 $email = 		(isset($row) && !empty($row['email']))      ? $row['email']     : (isset($_SESSION['email'])     ? $_SESSION['email'] : '');
 $address = 		(isset($row) && !empty($row['address']))    ? $row['address']   : (isset($_SESSION['address'])   ? $_SESSION['address'] : '');
-$address2 =	    (isset($row) && !empty($row['address2']))   ? $row['address2']  : (isset($_SESSION['address2'])  ? $_SESSION['address2'] : '');
+$address2 =	        (isset($row) && !empty($row['address2']))   ? $row['address2']  : (isset($_SESSION['address2'])  ? $_SESSION['address2'] : '');
 $city = 		(isset($row) && !empty($row['city']))       ? $row['city']      : (isset($_SESSION['city'])      ? $_SESSION['city'] : '');
 $zip = 			(isset($row) && !empty($row['postcode']))   ? $row['postcode']  : (isset($_SESSION['zip'])       ? $_SESSION['zip'] : '');
 $state = 		(isset($row) && !empty($row['state']))      ? $row['state']     : (isset($_SESSION['state'])     ? $_SESSION['state'] : '');
