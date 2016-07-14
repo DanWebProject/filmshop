@@ -1,2 +1,2 @@
 # e-commerce
-project filmshop
+project e-commerce
